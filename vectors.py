@@ -31,6 +31,13 @@ class ThreeQubitVector():
             [a8]])
 
 class VectorConv():
-    def TensorProd(vector1,vector2):
-        #convert two one-qubit vectors to one two-qubit vector easily
-        return np.kron(vector1,vector2)
+
+    def TensorProdTwo(construct1,construct2):
+        #construct is a numpy array, either a vector or a matrix
+        return np.kron(construct1,construct2)
+
+    def TensorProdThree(construct1,construct2,construct3):
+        #construct is a numpy array, either a vector or a matrix
+        #it's Const1 X Const2 X Const3 (first 2 and 3, then 1 with the resulting product)
+        return np.kron(np.kron(construct2,construct3),construct1)
+    
