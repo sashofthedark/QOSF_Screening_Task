@@ -20,3 +20,14 @@ def ApplyNoise(prob_x,prob_z,InputVector = ThreeQubitVector):
         SelectedGate = choice(gates,1,prob_dist)
         VectorAfterNoise = SelectedGate.dot(InputVector.colvector)
         return VectorAfterNoise
+
+def RetrieveFirstQubit(InputVector = ThreeQubitVector):
+    #this function assumes the second and third qubits are either |00> or |11>
+    #(this is the case in this particular example)
+    RowVector = InputVector.rowvector
+    if RowVector[0][0] == 0 and RowVector[0][4] == 0:
+        return OneQubitVector(RowVector[0][3],RowVector[0][7])
+    else:
+        return OneQubitVector(RowVector[0][0],RowVector[0][4])
+        #returning an instance of the class OneQubitVector with the correct components
+        #corresponding to the first qubit (this discards the ancilla qubits)
