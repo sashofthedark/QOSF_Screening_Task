@@ -32,6 +32,14 @@ def RetrieveFirstQubit(InputVector = VectorOfQubits):
         #returning an instance of the class OneQubitVector with the correct components
         #corresponding to the first qubit (this discards the ancilla qubits)
 
+def EntangledVector(NormalizationConstant,FirstVector = list,SecondVector = list):
+    #this function creates an entangled vector and returns it as an instance of the class VectorOfQubits
+    VectorWithoutNorm = []
+    for (item1,item2) in zip(FirstVector,SecondVector):
+        VectorWithoutNorm.append(item1 + item2)
+    VectorWithNorm = NormalizationConstant * VectorWithoutNorm
+    return VectorOfQubits(VectorWithNorm)
+
 class VectorConv():
 
     def TensorProdTwo(construct1,construct2):
