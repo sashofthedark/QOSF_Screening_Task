@@ -48,7 +48,7 @@ def CircuitAndCorrection(
     prob_p, 
     UpperQubit = VectorOfQubits,
     LowerQubit = VectorOfQubits, 
-    result = VectorOfQubits):
+    result     = VectorOfQubits):
     #pass the first and second qubits separately to ApplyNoise function 
     # which will apply noise to them, pass the probabilities to this function
     #Apply Hadamard gate to upper qubit
