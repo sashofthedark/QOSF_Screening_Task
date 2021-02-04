@@ -2,13 +2,17 @@ import numpy as np
 from math import sqrt 
 from vectors import VectorOfQubits
 from gates import OneQubitGates,TwoQubitGates,ThreeQubitGates
+from vectorconv import VectorConv
 from numpy.random import choice
 
 def PerformBitFlipCorrection(InputVector: VectorOfQubits):
     Vector = InputVector.colvector
     return ThreeQubitGates.BitFlipGate().dot(Vector)
 
-def ApplyNoise(prob_x,prob_z,InputVector: VectorOfQubits):
+def ApplyNoise(prob_x,prob_z,InputVector: VectorOfQubits.colvector):
+    '''
+    Applies either unity, X or Z gates randomly, using the provided probabilities and input column vector
+    '''
     if (prob_x + prob_z) > 1:
         raise ValueError("Sum of probabilities greater than one")
     elif prob_x >= 0.25 or prob_z >= 0.25:
@@ -18,7 +22,8 @@ def ApplyNoise(prob_x,prob_z,InputVector: VectorOfQubits):
         prob_dist = [prob_unity,prob_x,prob_z]
         gates = [OneQubitGates.unity,OneQubitGates.x,OneQubitGates.z]
         SelectedGate = choice(gates,1,prob_dist)
-        VectorAfterNoise = SelectedGate.dot(InputVector.colvector)
+        VectorAfterNoise = SelectedGate.dot(InputVector)
+        #InputVector is a column vector
         return VectorAfterNoise
 
 def RetrieveFirstQubit(InputVector: VectorOfQubits):
@@ -34,16 +39,26 @@ def RetrieveFirstQubit(InputVector: VectorOfQubits):
         #returning an instance of the class OneQubitVector with the correct components
         #corresponding to the first qubit (this discards the ancilla qubits)
 
-def CircuitAndCorrection(prob_x, prob_p):
+def CircuitAndCorrection(prob_x, prob_z):
+    '''
+    This function receives a |0+> initial vector, applies noise to each qubit based on the provided probabilities 
+    and then performs error correction to get the correct final entangled wavefunction
+    '''
     UpperQubit = VectorOfQubits([1,0]).colvector
     #this is a zero state (column vector)
     LowerQubit = OneQubitGates.h.dot(UpperQubit)
     #this yields a plus state (column vector)
-    #pass the first and second qubits separately to ApplyNoise function 
+
+    #pass the first and second qubits separately to ApplyNoise function
     # which will apply noise to them, pass the probabilities to this function
-    #Apply Hadamard gate to upper qubit
+    UpperQubitAfterNoise = ApplyNoise(prob_x,prob_z, UpperQubit) 
+    #Apply Hadamard gate to upper qubit (column vector)
+    UpperQubitNoiseAndHadamard = OneQubitGates.h.dot(UpperQubitAfterNoise)
 
     #create an entangled state of three qubits for the upper qubit (with |00> as ancilla)
+    ZeroState = VectorOfQubits([1,0]).colvector
+    UpperThreeQubits = VectorConv.TensorProdThree(
+        UpperQubitNoiseAndHadamard,ZeroState,ZeroState)
     #create an entangled state of three qubits for the lower qubit (with |00> as ancilla)
 
     #Apply BitFlip error correction circuit to upper three qubits
