@@ -1,6 +1,6 @@
 from vectors import VectorOfQubits
 from gates import OneQubitGates,TwoQubitGates,ThreeQubitGates
-from Functions import VectorConv
+from functions import VectorConv
 from math import sqrt
 
 def Main():
