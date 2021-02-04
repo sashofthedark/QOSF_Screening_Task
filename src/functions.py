@@ -32,23 +32,13 @@ def RetrieveFirstQubit(InputVector = VectorOfQubits):
         #returning an instance of the class OneQubitVector with the correct components
         #corresponding to the first qubit (this discards the ancilla qubits)
 
-class VectorConv():
-
-    def TensorProdTwo(construct1,construct2):
-        #construct is either a column vector, a row vector or a matrix
-        return np.kron(construct1,construct2)
-
-    def TensorProdThree(construct1,construct2,construct3):
-        #construct is either a column vector, a row vector or a matrix
-        #it's Const1 X Const2 X Const3 (first 2 and 3, then 1 with the resulting product)
-        return np.kron(np.kron(construct2,construct3),construct1)
-
 def CircuitAndCorrection(
     prob_x, 
-    prob_p, 
-    UpperQubit = VectorOfQubits,
-    LowerQubit = VectorOfQubits, 
-    result     = VectorOfQubits):
+    prob_p):
+    UpperQubit = VectorOfQubits(1,0).colvector
+    #this is a zero state (column vector)
+    LowerQubit = OneQubitGates.h * VectorOfQubits(1,0).colvector
+    #this yields a plus state (column vector)
     #pass the first and second qubits separately to ApplyNoise function 
     # which will apply noise to them, pass the probabilities to this function
     #Apply Hadamard gate to upper qubit

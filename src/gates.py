@@ -1,7 +1,7 @@
 import numpy as np
 from math import sqrt 
 from vectors import VectorOfQubits
-from functions import VectorConv
+from vectorconv import VectorConv
 
 class OneQubitGates():
     def __init__(self):
