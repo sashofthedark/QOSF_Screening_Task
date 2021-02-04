@@ -2,12 +2,12 @@ import numpy as np
 from math import sqrt
 
 class VectorOfQubits():
-    def __init__(self,Values = list):
+    def __init__(self,Values: list):
         self.rowvector = np.array([Values])
         self.colvector = np.transpose(self.rowvector)
 
 class EntangledVector():
-    def __init__(self,NormalizationConstant,FirstVector = list,SecondVector = list):
+    def __init__(self,NormalizationConstant,FirstVector: list,SecondVector: list):
         #this function creates an entangled vector and returns it as an instance of the class VectorOfQubits
         VectorWithoutNorm = []
 

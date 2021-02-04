@@ -4,53 +4,53 @@ from vectors import VectorOfQubits
 from vectorconv import VectorConv
 
 class OneQubitGates():
-    def __init__(self):
-        self.x = np.array([
-            [0,1],
-            [1,0]])
-        #X Pauli gate
-        self.z = np.array([
-            [1,0],
-            [0,-1]])
-        #Z pauli gate
-        self.h = (1/sqrt(2)) * np.array([
-            [1,1],
-            [1,-1]])
-        #Hadamard gate
-        self.unity = np.array([
-            [1,0],
-            [0,1]])
+    x = np.array([
+        [0,1],
+        [1,0]])
+    #X Pauli gate
+
+    z = np.array([
+        [1,0],
+        [0,-1]])
+    #Z pauli gate
+
+    h = (1/sqrt(2)) * np.array([
+        [1,1],
+        [1,-1]])
+    #Hadamard gate
+
+    unity = np.array([
+        [1,0],
+        [0,1]])
 
 class TwoQubitGates():
-    def __init__(self):
-        self.cnot = np.array([
-            [1,0,0,0],
-            [0,1,0,0],
-            [0,0,0,1],
-            [0,0,1,0]])
+    cnot = np.array([
+        [1,0,0,0],
+        [0,1,0,0],
+        [0,0,0,1],
+        [0,0,1,0]])
 
 class ThreeQubitGates():
-
-    def __init__(self):
-        self.toffoli = np.array([
-            [1,0,0,0,0,0,0,0],
-            [0,1,0,0,0,0,0,0],
-            [0,0,1,0,0,0,0,0],
-            [0,0,0,0,0,0,0,1],
-            [0,0,0,0,1,0,0,0],
-            [0,0,0,0,0,1,0,0],
-            [0,0,0,0,0,0,1,0],
-            [0,0,0,1,0,0,0,0]])
+    toffoli = np.array([
+        [1,0,0,0,0,0,0,0],
+        [0,1,0,0,0,0,0,0],
+        [0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,1],
+        [0,0,0,0,1,0,0,0],
+        [0,0,0,0,0,1,0,0],
+        [0,0,0,0,0,0,1,0],
+        [0,0,0,1,0,0,0,0]])
         #it's actually the toffoli gate where the "upper" qubit is the target and two "lower"
         #ones are the "controls"
 
-    def BitFlipGate(self):
+    @staticmethod
+    def BitFlipGate():
             FirstGate = VectorConv.TensorProdTwo(TwoQubitGates.cnot,OneQubitGates.unity)
             #tensor product between a cnot gate and unity matrix
 
             ZeroZeroMatrix = VectorConv.TensorProdTwo(
             VectorOfQubits([1,0]).rowvector,
-            VectorOfQubits(1,0).colvector)
+            VectorOfQubits([1,0]).colvector)
 
             OneOneMatrix = VectorConv.TensorProdTwo(
             VectorOfQubits([0,1]).rowvector,
