@@ -1,6 +1,7 @@
 import numpy as np
 from math import sqrt 
-from vectors import OneQubitVector,TwoQubitVector,ThreeQubitVector,VectorConv
+from vectors import VectorOfQubits
+from Functions import VectorConv
 
 class OneQubitGates():
     def __init__(self):
@@ -48,12 +49,12 @@ class ThreeQubitGates():
             #tensor product between a cnot gate and unity matrix
 
             ZeroZeroMatrix = VectorConv.TensorProdTwo(
-            OneQubitVector(1,0).rowvector,
-            OneQubitVector(1,0).colvector)
+            VectorOfQubits([1,0]).rowvector,
+            VectorOfQubits(1,0).colvector)
 
             OneOneMatrix = VectorConv.TensorProdTwo(
-            OneQubitVector(0,1).rowvector,
-            OneQubitVector(0,1).colvector)
+            VectorOfQubits([0,1]).rowvector,
+            VectorOfQubits([0,1]).colvector)
 
             SecondGate_1 = VectorConv.TensorProdThree(ZeroZeroMatrix,OneQubitGates.unity,OneQubitGates.unity)
             SecondGate_2 = VectorConv.TensorProdThree(OneOneMatrix,OneQubitGates.unity,OneQubitGates.x)
