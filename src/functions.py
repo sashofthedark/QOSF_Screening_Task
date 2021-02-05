@@ -44,30 +44,39 @@ def CircuitAndCorrection(prob_x, prob_z):
     This function receives a |0+> initial vector, applies noise to each qubit based on the provided probabilities 
     and then performs error correction to get the correct final entangled wavefunction
     '''
-    UpperQubit = VectorOfQubits([1,0]).colvector
+    ZeroState = VectorOfQubits([1,0]).colvector
+    UpperQubit = ZeroState
     #this is a zero state (column vector)
     LowerQubit = OneQubitGates.h.dot(UpperQubit)
-    #this yields a plus state (column vector)
+    #this is a plus state (column vector)
 
     #pass the first and second qubits separately to ApplyNoise function
     # which will apply noise to them, pass the probabilities to this function
     UpperQubitAfterNoise = ApplyNoise(prob_x,prob_z, UpperQubit) 
+    LowerQubitAfterNoise = ApplyNoise(prob_x,prob_z, LowerQubit)
     #Apply Hadamard gate to upper qubit (column vector)
     UpperQubitNoiseAndHadamard = OneQubitGates.h.dot(UpperQubitAfterNoise)
-
     #create an entangled state of three qubits for the upper qubit (with |00> as ancilla)
-    ZeroState = VectorOfQubits([1,0]).colvector
+
     UpperThreeQubits = VectorConv.TensorProdThree(
         UpperQubitNoiseAndHadamard,ZeroState,ZeroState)
     #create an entangled state of three qubits for the lower qubit (with |00> as ancilla)
-
+    LowerThreeQubits = VectorConv.TensorProdThree(
+        LowerQubitAfterNoise,ZeroState,ZeroState)
     #Apply BitFlip error correction circuit to upper three qubits
     #Apply BitFlip error correction circuit to lower three qubits
-
+    UpperAfterCorrection = PerformBitFlipCorrection(UpperThreeQubits)
+    LowerAfterCorrection = PerformBitFlipCorrection(LowerThreeQubits)
     #Apply Hadamard gate to upper qubit (create a three-qubit gate with two unity one-qubit matrices)
-
+    HadThree = VectorConv.TensorProdThree(OneQubitGates.h,OneQubitGates.unity,OneQubitGates.unity)
+    UpperAfterCorrectionAndHadamard = HadThree.dot(UpperAfterCorrection)
     #Create a two-qubit state from upper and lower qubit (discard the ancilla qubits)
+    UpperQubitFinal = RetrieveFirstQubit(UpperAfterCorrectionAndHadamard)
+    LowerQubitFinal = RetrieveFirstQubit(LowerAfterCorrection)
+    #make them a two-qubit state (perform tensor product)
+    FinalBeforeCnot = VectorConv.TensorProdTwo(UpperQubitFinal,LowerQubitFinal)
     #apply CNOT gate to the two-qubit state
-
-    #compare with desired result 
-    #return True if comparison successful, and False otherwise.
+    FinalAfterCnot = TwoQubitGates.cnot.dot(FinalBeforeCnot)
+    #return an instance of the VectorOfQubits class as output
+    FinalRowVector = np.transpose(FinalAfterCnot)
+    return VectorOfQubits(FinalRowVector)
