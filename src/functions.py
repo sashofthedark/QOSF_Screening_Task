@@ -6,10 +6,16 @@ from vectorconv import VectorConv
 from numpy.random import choice
 
 def PerformBitFlipCorrection(InputVector: VectorOfQubits):
+    '''
+    This fuction applies the bit flip correction gate to an input quantum state. 
+    The state should be a three qubit state
+    '''
+    if len(InputVector.rowvector[0,:])!=8 or len(InputVector.colvector[:,0])!=8:
+        raise ValueError('The input state is not a three qubit state')
     Vector = InputVector.colvector
     return ThreeQubitGates.BitFlipGate().dot(Vector)
 
-def ApplyNoise(prob_x,prob_z,InputVector: VectorOfQubits.colvector):
+def ApplyNoise(prob_x,prob_z,InputVector: np.array):
     '''
     Applies either unity, X or Z gates randomly, using the provided probabilities and input column vector
     '''
