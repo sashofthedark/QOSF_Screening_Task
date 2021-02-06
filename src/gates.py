@@ -43,24 +43,24 @@ class ThreeQubitGates():
         #it's actually the toffoli gate where the "upper" qubit is the target and two "lower"
         #ones are the "controls"
 
-    @staticmethod
-    def BitFlipGate():
+    @classmethod
+    def BitFlipGate(cls):
             FirstGate = VectorConv.TensorProdTwo(TwoQubitGates.cnot,OneQubitGates.unity)
             #tensor product between a cnot gate and unity matrix
 
             ZeroZeroMatrix = VectorConv.TensorProdTwo(
-            VectorOfQubits([1,0]).rowvector,
-            VectorOfQubits([1,0]).colvector)
+            VectorOfQubits([1,0]).colvector,
+            VectorOfQubits([1,0]).rowvector)
 
             OneOneMatrix = VectorConv.TensorProdTwo(
-            VectorOfQubits([0,1]).rowvector,
-            VectorOfQubits([0,1]).colvector)
+            VectorOfQubits([0,1]).colvector,
+            VectorOfQubits([0,1]).rowvector)
 
             SecondGate_1 = VectorConv.TensorProdThree(ZeroZeroMatrix,OneQubitGates.unity,OneQubitGates.unity)
             SecondGate_2 = VectorConv.TensorProdThree(OneOneMatrix,OneQubitGates.unity,OneQubitGates.x)
 
             SecondGate = SecondGate_1 + SecondGate_2
-            ThirdGate = self.toffoli
+            ThirdGate = cls.toffoli
             BitFlipMatrix = (ThirdGate.dot(SecondGate)).dot(FirstGate)
             return BitFlipMatrix
 
