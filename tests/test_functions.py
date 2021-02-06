@@ -25,10 +25,10 @@ class TestFunctions(unittest.TestCase):
         ['011',ZeroState, OneState, OneState, [0,0,0,0,0,0,0,1]],
         ['111',OneState, OneState, OneState, [0,0,0,0,1,0,0,0]]
     ])
-    def test_PerformBitFlipCorrection(self, name, input1, input2, input3, output):
-        InputState = VectorConv.TensorProdThree(input1, input2, input3)
+    def test_PerformBitFlipCorrection(self, name, FirstQubit, SecondQubit, ThirdQubit, OutState):
+        InputState = VectorConv.TensorProdThree(FirstQubit, SecondQubit, ThirdQubit)
         OutputVector = np.transpose(functions.PerformBitFlipCorrection(VectorOfQubits(InputState[0,:])))
-        np.testing.assert_array_equal(OutputVector,VectorOfQubits(output).rowvector)
+        np.testing.assert_array_equal(OutputVector,VectorOfQubits(OutState).rowvector)
 
     def test_ApplyNoise(self):
         pass
