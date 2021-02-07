@@ -10,7 +10,7 @@ def PerformBitFlipCorrection(InputVector: VectorOfQubits):
     This fuction applies the bit flip correction gate to an input quantum state. 
     The state should be a three qubit state
     '''
-    if len(InputVector.rowvector[0,:])!=8 or len(InputVector.colvector[:,0])!=8:
+    if len(InputVector.rowvector[0,:])!=8:
         raise ValueError('The input state is not a three qubit state')
     Vector = InputVector.colvector
     return ThreeQubitGates.BitFlipGate().dot(Vector)
@@ -73,9 +73,9 @@ def CircuitAndCorrection(prob_x, prob_z):
     else:
 
         ZeroState = VectorOfQubits([1,0]).colvector
-        UpperQubit = ZeroState
+        LowerQubit = ZeroState
         #this is a zero state (column vector)
-        LowerQubit = OneQubitGates.h.dot(UpperQubit)
+        UpperQubit = OneQubitGates.h.dot(LowerQubit)
         #this is a plus state (column vector)
 
         #pass the first and second qubits separately to ApplyNoise function
@@ -83,29 +83,47 @@ def CircuitAndCorrection(prob_x, prob_z):
         UpperQubitAfterNoise = ApplyNoise(prob_x,prob_z, UpperQubit) 
         LowerQubitAfterNoise = ApplyNoise(prob_x,prob_z, LowerQubit)
         #Apply Hadamard gate to upper qubit (column vector)
+
         UpperQubitNoiseAndHadamard = OneQubitGates.h.dot(UpperQubitAfterNoise)
         #create an entangled state of three qubits for the upper qubit (with |00> as ancilla)
 
-        UpperThreeQubits = VectorConv.TensorProdThree(
+        UpperThreeQubitsCol = VectorConv.TensorProdThree(
             UpperQubitNoiseAndHadamard,ZeroState,ZeroState)
+        UpperThreeQubitsRow = np.transpose(UpperThreeQubitsCol)
         #create an entangled state of three qubits for the lower qubit (with |00> as ancilla)
+
         LowerThreeQubits = VectorConv.TensorProdThree(
             LowerQubitAfterNoise,ZeroState,ZeroState)
-        #Apply BitFlip error correction circuit to upper three qubits
-        #Apply BitFlip error correction circuit to lower three qubits
-        UpperAfterCorrection = PerformBitFlipCorrection(UpperThreeQubits)
-        LowerAfterCorrection = PerformBitFlipCorrection(LowerThreeQubits)
-        #Apply Hadamard gate to upper qubit (create a three-qubit gate with two unity one-qubit matrices)
+        LowerThreeQubitsRow = np.transpose(LowerThreeQubits)
+        #same for lower qubit
+
+        UpperThreeQubitsClass = VectorOfQubits(list(UpperThreeQubitsRow[0,:]))
+        LowerThreeQubitsClass = VectorOfQubits(list(LowerThreeQubitsRow[0,:]))
+        #these are of class VectorOfQubits - which is the input for PerformBitFlipCorrection
+
+        UpperAfterCorrection = PerformBitFlipCorrection(UpperThreeQubitsClass)
+        LowerAfterCorrection = PerformBitFlipCorrection(LowerThreeQubitsClass)
+        #Apply BitFlip error correction circuit to upper and lower three qubits
+
         HadThree = VectorConv.TensorProdThree(OneQubitGates.h,OneQubitGates.unity,OneQubitGates.unity)
         UpperAfterCorrectionAndHadamard = HadThree.dot(UpperAfterCorrection)
+        #Apply Hadamard gate to upper qubit and create a three-qubit gate with two unity one-qubit matrices
+
+        UpperCorrHadClass = VectorOfQubits(list(
+            np.transpose(UpperAfterCorrectionAndHadamard)[0,:]))
+        LowerCorrClass = VectorOfQubits(list(
+            np.transpose(LowerAfterCorrection)[0,:]))
+
+        UpperQubitFinal = RetrieveFirstQubit(UpperCorrHadClass)
+        LowerQubitFinal = RetrieveFirstQubit(LowerCorrClass)
         #Create a two-qubit state from upper and lower qubit (discard the ancilla qubits)
-        UpperQubitFinal = RetrieveFirstQubit(UpperAfterCorrectionAndHadamard)
-        LowerQubitFinal = RetrieveFirstQubit(LowerAfterCorrection)
+
         #make them a two-qubit state (perform tensor product)
-        FinalBeforeCnot = VectorConv.TensorProdTwo(UpperQubitFinal,LowerQubitFinal)
+        FinalBeforeCnot = VectorConv.TensorProdTwo(
+            UpperQubitFinal.colvector,LowerQubitFinal.colvector)
         #apply CNOT gate to the two-qubit state
         FinalAfterCnot = TwoQubitGates.cnot.dot(FinalBeforeCnot)
-        #return an instance of the VectorOfQubits class as output
-        FinalRowVector = np.transpose(FinalAfterCnot)
-        return VectorOfQubits(FinalRowVector)
+        #return a numpy array which has one column
+        return FinalAfterCnot
+        
         #we expect to get an entangled state (1/sqrt(2))*(|00> + |11>)

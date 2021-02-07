@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..','src'))
 import functions
 from numpy.core import function_base
 from vectorconv import VectorConv
-from vectors import VectorOfQubits
+from vectors import VectorOfQubits,EntangledVector
 
 
 class TestFunctions(unittest.TestCase):
@@ -72,9 +72,15 @@ class TestFunctions(unittest.TestCase):
         with self.assertRaises(ValueError):
             functions.CircuitAndCorrection(p_x_right1,p_z_wrong1)
 
-
-    def test_CircuitAndCorrection(self):
-        pass
+    @parameterized.expand([
+        ['first',0.01,0.1],
+        ['second',0.2,0.03],
+        ['third',0.1,0.14]
+    ])
+    def test_CircuitAndCorrection(self,name,p_x,p_z):
+        ExpOutputState = EntangledVector((1/sqrt(2)),[1,0,0,0],[0,0,0,1]).colvector
+        np.testing.assert_array_almost_equal(
+            functions.CircuitAndCorrection(p_x,p_z),ExpOutputState)
 
 if __name__ == 'main':
     unittest.main
