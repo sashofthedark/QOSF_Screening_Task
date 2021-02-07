@@ -66,9 +66,12 @@ def CircuitAndCorrection(prob_x, prob_z):
     '''
     if (prob_x + prob_z) > 1:
         raise ValueError("Sum of probabilities greater than one")
+
     elif prob_x >= 0.25 or prob_z >= 0.25:
         raise ValueError("The error correction code is not effective for these probabilities")
+
     else:
+
         ZeroState = VectorOfQubits([1,0]).colvector
         UpperQubit = ZeroState
         #this is a zero state (column vector)
@@ -105,3 +108,4 @@ def CircuitAndCorrection(prob_x, prob_z):
         #return an instance of the VectorOfQubits class as output
         FinalRowVector = np.transpose(FinalAfterCnot)
         return VectorOfQubits(FinalRowVector)
+        #we expect to get an entangled state (1/sqrt(2))*(|00> + |11>)
