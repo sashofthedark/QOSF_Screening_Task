@@ -60,8 +60,9 @@ def RetrieveFirstQubit(InputVector: VectorOfQubits):
 
 def CircuitAndCorrection(prob_x, prob_z):
     '''
-    This function receives a |0+> initial vector, applies noise to each qubit based on the provided probabilities 
-    and then performs error correction to get the correct final entangled wavefunction
+    This function receives a |0+> initial vector, applies noise to each qubit
+    based on the provided probabilities and then performs error 
+    correction to get the correct final entangled wavefunction.
     '''
     if (prob_x + prob_z) > 1:
         raise ValueError("Sum of probabilities greater than one")

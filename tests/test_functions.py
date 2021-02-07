@@ -59,6 +59,20 @@ class TestFunctions(unittest.TestCase):
         OutputState = functions.RetrieveFirstQubit(InputStateV)
         np.testing.assert_array_almost_equal(OutputState.rowvector,FirstQubit)
 
+    def test_CircuitAndCorrectionRaises(self):
+        p_x_wrong1 = 1.1
+        #this is greater than 1, therefore raises ValueError
+        p_x_right1 = 0.01
+        p_z_wrong1 = 0.8
+        #this is greater than 0.5, therefore raises ValueError
+        p_z_right1 = 0.04
+
+        with self.assertRaises(ValueError):
+            functions.CircuitAndCorrection(p_x_wrong1,p_z_right1)
+        with self.assertRaises(ValueError):
+            functions.CircuitAndCorrection(p_x_right1,p_z_wrong1)
+
+
     def test_CircuitAndCorrection(self):
         pass
 
