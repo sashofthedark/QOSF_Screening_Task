@@ -1,13 +1,17 @@
-import numpy as np
-from math import sqrt
+import os
+import sys
 import unittest
-from src.vectorconv import VectorConv
-from parameterized import parameterized
-from vectors import VectorOfQubits
-from gates import OneQubitGates,TwoQubitGates
+from math import sqrt
 
-import os, sys
+import numpy as np
+from parameterized import parameterized
+
 sys.path.append(os.path.join(os.path.dirname(__file__),'..','src'))
+
+from gates import OneQubitGates, TwoQubitGates
+from vectorconv import VectorConv
+from vectors import VectorOfQubits
+
 
 class TestVectorConv(unittest.TestCase):
 
@@ -42,7 +46,6 @@ class TestVectorConv(unittest.TestCase):
     ])
     def test_VectorConv_ProdThree(self,name,construct1,construct2,construct3,Output):
         KronResult = VectorConv.TensorProdThree(construct1,construct2,construct3)
-        print(KronResult)
         np.testing.assert_array_almost_equal(KronResult,Output,verbose=True)
 
 if __name__ == 'main':
