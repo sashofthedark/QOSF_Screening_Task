@@ -76,12 +76,13 @@ class TestFunctions(unittest.TestCase):
         ['second',0.2,0.03],
         ['third',0.1,0.14],
         ['fourth',0.6,0.01],
-        ['fifth',0.01,0.7]
+        ['fifth',0.3,0.5],
+        ['sixth',0,0.9]
     ])
     def test_CircuitAndCorrection(self,name,p_x,p_z):
         ExpOutputState = EntangledVector((1/sqrt(2)),[1,0,0,0],[0,0,0,1]).colvector
         np.testing.assert_array_almost_equal(
-            functions.CircuitAndCorrection(p_x,p_z),ExpOutputState)
+             functions.CircuitAndCorrection(p_x,p_z),ExpOutputState)
 
 if __name__ == 'main':
     unittest.main

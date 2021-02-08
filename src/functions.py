@@ -37,13 +37,23 @@ def RetrieveFirstQubit(InputVector: VectorOfQubits):
     '''
     InputStateRow = InputVector.rowvector
     NonzeroIndices = np.nonzero(InputStateRow)
-    if len(NonzeroIndices[1]) == 2:
-        #there are two nonzero elements in the array
-        UpperQubitIndex = NonzeroIndices[1][0]
-        LowerQubitIndex = NonzeroIndices[1][1] 
+    NonzeroIndicesElement = NonzeroIndices[1][:]
+    #all of the indices of InputStateRow which lead to a nonzero element in it
+    FilteredIndexList = [
+        item for item in NonzeroIndicesElement if  InputStateRow[0,item] > 1e-6]
+    #leave only the indices which lead to elements greater than the threshold
+    FilteredIndexList.sort()
+    #sort indices in ascending order
+
+    if len(FilteredIndexList) == 2:
+        #in the case we have found two nonzero elements
+        UpperQubitIndex = FilteredIndexList[0]
+        #index leading to the first qubit element
+        LowerQubitIndex = FilteredIndexList[1]
+        #index leading to the second qubit element
 
     else:
-        NonzeroQubitIndex = NonzeroIndices[1][0]
+        NonzeroQubitIndex = FilteredIndexList[0]
         #there is only one nonzero element in the array
 
         if (NonzeroQubitIndex + 4) > 7:
