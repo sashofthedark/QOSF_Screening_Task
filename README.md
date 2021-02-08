@@ -1,14 +1,13 @@
 # QOSF_Screening_Task
 This is an implementation of a second screening task given by QOSF in order to enroll in a Quantum Mentorship Program
 
-_________________________________________________________________
-# TASK DESCRIPTION
-
+____________________________________________________
+## TASK DESCRIPTION
 The task was to start from a |0> upper qubit, which undergoes a Hadamard gate, and a |0> lower qubit - so the input state is actually |+0>. 
 Then, apply to each qubit an error gate, which applies either a Pauli X, Pauli Z or Unity operators to each of the qubits.
 After this, the code should perform error correction, and then a CNOT gate, so the output state should be an entangled Bell Phi Plus state. 
 
-_________________________________________________________________
+________________________________________________________________
 ## SOLUTION
 
 Since the initial state, after the Hadamard gate, is |+0>, we can see that applying the error gate to the first qubit (|+>)  may result in a sign flip, whilst applying the error gate to the second qubit (|0>) may result in a bit flip. 
@@ -21,7 +20,7 @@ Two ancilla qubits, two for each input qubit, will be initialized to |0> for eac
 
 _________________________________________________________________
 ## ERROR CORRECTION CIRCUIT
-The circuit that is implemented in this project is attached below
+The circuit that is implemented in this project is shown below.
 
 _________________________________________________________________
 ## HOW TO RUN THIS CODE
