@@ -35,4 +35,6 @@ An additional test, called test_CircuitAndCorrectionRaises, which checks whether
 
 Right before the "main" test, called test_CircuitAndCorrection, there is a @parameterized.expand block, where different values of probability for an X and a Z gate are given as input, each combination of which creates a separate test. 
 
-All tests can be run together to check they all pass. Alternatively, only test_CircuitAndCorrection (with parameters of choice or the parameters that are currently there) and test_CircuitAndCorrectionRaises can be run.
+All tests can be run together to check all parts of the program in depth.
+
+ Alternatively, only test_CircuitAndCorrection (with new or existing parameters) and test_CircuitAndCorrectionRaises can be run.
