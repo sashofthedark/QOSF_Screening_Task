@@ -22,7 +22,7 @@ _________________________________________________________________
 ## ERROR CORRECTION CIRCUIT
 The circuit that is implemented in this project is shown below.
 
-![](ErrorCorrectionCircuit.jpg)
+![](ErrorCorrectionCircuit.JPG)
 
 _________________________________________________________________
 ## HOW TO RUN THIS CODE
