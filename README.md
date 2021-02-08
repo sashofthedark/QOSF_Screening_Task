@@ -33,17 +33,17 @@ First, run
 pip install -r /path/to/requirements.txt
 
 ```
-to install the required packages. In this case, it's **parameterized** and **numpy** .
+to install the required packages. In this case, it's `parameterized` and `numpy` .
 
-In order to check the code, there are tests in the tests folder. 
+In order to check the code, there are tests in the [tests](tests) folder. 
 
-The test which is responsible for running the whole error correction circuit is test_CircuitAndCorrection
-and it is located in the test_functions.py method. 
+The test which is responsible for running the whole error correction circuit is `test_CircuitAndCorrection`
+and it is located in the [test_functions.py](tests/test_functions.py) module. 
 
-An additional test, called test_CircuitAndCorrectionRaises, which checks whether the program raises a ValueError when the sum of probabilities for the error gates exceeds one, is added.
+There is also a `test_CircuitAndCorrectionRaises` test, which checks whether the program raises a `ValueError` when the sum of probabilities for the error gates exceeds one.
 
-Right before the "main" test, called test_CircuitAndCorrection, there is a @parameterized.expand block, where different values of probability for an X and a Z gate are given as input, each combination of which creates a separate test. 
+Right before the "main" test, called `test_CircuitAndCorrection`, there is a `@parameterized.expand` block, where different values of probability for an X and a Z gate are given as input, each combination of which creates a separate test. 
 
 All tests can be run together to check all parts of the program in depth.
 
- Alternatively, only test_CircuitAndCorrection (with new or existing parameters) and test_CircuitAndCorrectionRaises can be run.
+ Alternatively, only `test_CircuitAndCorrection` (with new or existing parameters) and `test_CircuitAndCorrectionRaises` can be run.
