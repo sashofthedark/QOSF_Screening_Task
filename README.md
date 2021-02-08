@@ -22,6 +22,8 @@ _________________________________________________________________
 ## ERROR CORRECTION CIRCUIT
 The circuit that is implemented in this project is shown below.
 
+![](ErrorCorrectionCircuit.jpg)
+
 _________________________________________________________________
 ## HOW TO RUN THIS CODE
 In order to check the code, there are tests in the tests folder. 
