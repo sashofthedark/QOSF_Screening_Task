@@ -27,6 +27,14 @@ The circuit that is implemented in this project is shown below.
 
 _________________________________________________________________
 ## HOW TO RUN THIS CODE
+
+First, run
+``` 
+pip install -r /path/to/requirements.txt
+
+```
+to install the required packages. In this case, it's **parameterized** and **numpy** .
+
 In order to check the code, there are tests in the tests folder. 
 
 The test which is responsible for running the whole error correction circuit is test_CircuitAndCorrection
