@@ -74,7 +74,9 @@ class TestFunctions(unittest.TestCase):
     @parameterized.expand([
         ['first',0.01,0.1],
         ['second',0.2,0.03],
-        ['third',0.1,0.14]
+        ['third',0.1,0.14],
+        ['fourth',0.6,0.01],
+        ['fifth',0.01,0.7]
     ])
     def test_CircuitAndCorrection(self,name,p_x,p_z):
         ExpOutputState = EntangledVector((1/sqrt(2)),[1,0,0,0],[0,0,0,1]).colvector

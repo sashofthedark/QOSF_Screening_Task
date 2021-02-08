@@ -3,6 +3,10 @@ from math import sqrt
 from vectors import VectorOfQubits
 from vectorconv import VectorConv
 
+def CallClassInit(cls):
+    cls.__ClassInit__()
+    return cls
+
 class OneQubitGates():
     x = np.array([
         [0,1],
@@ -30,6 +34,7 @@ class TwoQubitGates():
         [0,0,0,1],
         [0,0,1,0]])
 
+@CallClassInit
 class ThreeQubitGates():
     toffoli = np.array([
         [1,0,0,0,0,0,0,0],
@@ -44,7 +49,11 @@ class ThreeQubitGates():
         #ones are the "controls"
 
     @classmethod
-    def BitFlipGate(cls):
+    def __ClassInit__(cls):
+        cls.bitflip = cls.__BitFlipGate__()
+
+    @classmethod
+    def __BitFlipGate__(cls):
             FirstGate = VectorConv.TensorProdTwo(TwoQubitGates.cnot,OneQubitGates.unity)
             #tensor product between a cnot gate and unity matrix
 
@@ -63,4 +72,3 @@ class ThreeQubitGates():
             ThirdGate = cls.toffoli
             BitFlipMatrix = (ThirdGate.dot(SecondGate)).dot(FirstGate)
             return BitFlipMatrix
-

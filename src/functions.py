@@ -13,7 +13,7 @@ def PerformBitFlipCorrection(InputVector: VectorOfQubits):
     if len(InputVector.rowvector[0,:])!=8:
         raise ValueError('The input state is not a three qubit state')
     Vector = InputVector.colvector
-    return ThreeQubitGates.BitFlipGate().dot(Vector)
+    return ThreeQubitGates.bitflip.dot(Vector)
 
 def ApplyNoise(prob_x,prob_z,InputVector: np.array):
     '''
