@@ -1,4 +1,4 @@
-# QOSF Screening Task
+# Bit flip and Sign flip correction
 ## Task #2 - Bit flip and Sign flip correction
 This is an implementation of a second screening task given by QOSF in order to enroll in a Quantum Mentorship Program
 
